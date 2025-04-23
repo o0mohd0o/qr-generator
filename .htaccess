@@ -1,0 +1,25 @@
+# Enable mod_rewrite
+RewriteEngine On
+
+# --- STATIC ASSETS REWRITE ---
+# Only rewrite if the requested file does not exist in the current location
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Rewrite /static/... to /frontend/build/static/...
+RewriteRule ^static/(.*)$ /frontend/build/static/$1 [L,NC]
+
+# --- API REWRITE ---
+# Only rewrite if the requested file does not exist in the current location
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Rewrite /api/... to /backend/public/api/...
+RewriteRule ^api/(.*)$ /backend/public/api/$1 [L,NC]
+
+# --- SHORT URL REDIRECT REWRITE ---
+# Only rewrite if the requested file does not exist in the current location
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Rewrite /SZe7DV (or any 6-character code) to /backend/public/index.php/SZe7DV
+RewriteRule ^([A-Za-z0-9]{6})$ /backend/public/index.php/$1 [L,QSA]
+
+# (Optional) If your short codes can be a different length, adjust {6} accordingly.
