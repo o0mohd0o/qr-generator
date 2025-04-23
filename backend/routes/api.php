@@ -3,6 +3,7 @@
 use App\Http\Controllers\UrlController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// URL shortening endpoints
-Route::post('/shorten', [UrlController::class, 'shorten']);
-Route::get('/stats/{shortCode}', [UrlController::class, 'statistics']);
+// CSRF token endpoint - duplicating it here since the frontend is trying to access it with /api prefix
+Route::get('sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
+
+// Public endpoints that don't require authentication
+Route::post('shorten', [\App\Http\Controllers\UrlController::class, 'shorten']);
+Route::get('stats/{shortCode}', [\App\Http\Controllers\UrlController::class, 'statistics']);
+
